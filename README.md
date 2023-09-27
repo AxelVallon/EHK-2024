@@ -44,7 +44,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
    - Cliquez sur "Add" pour ajouter une nouvelle carte réseau.
    - Sélectionnez "Network Adapter" et cliquez sur "Finish".
 
-   ![Ajout de la carte réseau](image.png)
+   ![Ajout de la carte réseau](resources/image.png)
 
    - Maintenant, sélectionnez la nouvelle carte réseau ajoutée et assurez-vous qu'elle est configurée en mode "Host-only".
 
@@ -78,7 +78,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
    - Acceptez le risque et continuez
    - Cherchez `network.dns.disabled` et changez sa configuration à `true`.
 
-9. **Accéder à `Juice Shop`
+9. **Accéder à `Juice Shop`**
    - Entrez l'URL `http://172.22.200.10:3000` pour accéder à `Juice Shop`. 
 
 
@@ -88,13 +88,67 @@ Etant donné que vous ne pouvez pas lancer de navigateur depuis Burp, il vous se
 
 Pour ce faire, il faudra vous rendre avec le navigateur firefox du côté attaquant dans `Settings > Network Settings` et configurer le proxy suivant
 
-![Configuration du proxy](image-2.png)
+![Configuration du proxy](resources/image-2.png)
 
 En suite, vous devrez aller dans Burp et dans `Proxy`, il vous sera nécessaire d'activer l'intercepteur en changeant `Intercept is off` à `Intercept is on`. A partir de ce moment, Burp interceptera toute les communication entre votre navigateur et le service `Juice shop`. Vous pourrez alors les envoyer au `Repeater`.
 
 Désactiver l'intercepteur dans Burp permet aux requêtes http de passer sans être intérrompues. Cependant, lorsque que vous quittez Burp, il est indispensable de désactiver le proxy dans votre navigateur firefox. 
 
-## Résolution de problèmes
+## Tâche à effectuer
+
+### Warmup - Mauvaise validation d’inputs
+
+En visitant le shop, vous ne l'aimez pas du tout, vous décidez donc le de faire savoir en postant un feedback.
+
+1. **Trouvez un moyen de poster un feedback avec une note de 0 étoile.**
+   
+2. **Quel est le problème dans l'implémentation du système de feedback ?**
+   
+3. **Trouvez un moyen de vous créer un compte admin** : Pour cette étape il est peut-être utile d'obtenir le schéma de la base de donnée que vous
+récupérerez dans la partie suivante !
+
+4. **Quel est le problème dans cet appel à l'API ?**
+
+### Injection - Schéma de la base de donnée
+
+Dans cette partie on souhaite récupérer le schéma de la base de donnée pour ensuite pouvoir "crafter" d'autres requêtes SQL pour récupérer des données.
+
+5. **Quel est le point d'entrée pour injecter du SQL** ?
+   
+6. **Quel est le moteur de la base de donnée** ?
+   
+7. **Quelle est la requête utilisée de base pour récupérer un produit** ?
+   
+8. **En fonction du moteur de la base de donnée, existe-t-il des fonctions spécifiques pour récupérer le schéma de la base de donnée ? Ou existe-t-il une table contenant par exemple le script de création de la base de donnée ?**
+   
+9. **Trouvez un moyen de récupérer le schéma de la base de donnée.** : *Hint: UNION SELECT '1', '2', '3', ..... –*
+
+### Récupération du compte admin
+
+Maintenant que nous avons une bonne idée de la structure de la base de donnée, nous allons pouvoir récupérer des informations précises, tel que des comptes utilisateurs, notamment celui de l'administrateur. 
+
+On peut réutiliser le même point d'entrée que précédemment.
+
+10. **Trouvez un moyen de récupérer le compte admin.**
+    
+11. **Quel est le mot de passe de l'administrateur ?**
+
+### JWT
+
+Pour cette section Burpsuite propose des plugins pour manipuler les JWT (JWT Editor et/ou JSON Web Tokens), sinon vous pouvez utiliser jwt.io.
+En vous connectant avec votre nouveau compte admin, vous remarquez que le site utilise des JWT pour gérer les sessions.
+
+12. **Quel est l'algorithme utilisé pour signer les JWT ?**
+    
+13. **Trouvez un moyen de vous connecter en tant que "jwtn3d@juice-sh.op" sans connaitre son mot de passe.**
+    
+14. **Montrez le payload du JWT utilisé En utilisant DirBuster**. Vous trouvez un endpoint (/encryptionkeys) qui vous permet de récupérer des informations intéressantes.
+    
+15. **Montrez que vous êtes capable de vous connecter en tant que "rsa_lord@juice-sh.op" en forgeant un nouveau JWT.** *Hint : https://portswigger.net/web-security/jwt/algorithm-confusion*
+    
+16. **Pourquoi êtes-vous capable de forger ce JWT, quel est le problème d'implémentation coté serveur ?**
+
+## Résolution de problèmes 
 
 ### Problèmes avec MACVLAN
 
