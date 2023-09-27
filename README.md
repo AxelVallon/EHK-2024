@@ -1,8 +1,27 @@
-# Procédure d'installation Web Lab
+# Laboratoire labtainer
 
-Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer et configurer certains paramètres.
+## Introduction
+
+Dans le cadre du cours EHK 2024, il vous est demandé de mettre en place de compétences de Ethical Hacking sur la plateforme `Juice-Shop`.
+Cette plateforme permet de s'attaquer à une grande quantité de challenge web dans le but de d'identifier et attaquer différents type de vulnérabilités.
+
+Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuée. Normalement, cette solution est déployée sur un serveur distant mais suite à des problème d'infrastructure, vous devrez l'installer vous même localement. 
+
+**Ce laboratoire ne sera tout de même pas évalué.**
+
+## Labtainer
+
+Ce laboratoire a besoin d'une infrastructure assez complexe.
+
+![Diagramme réseau](resources/diagramme.png)
+
+Lors ce que vous aurez installer labtainer et lancer le laboratoire, votre infrastructure ressemblera à celle dessus.
+
+Vous aurez accès un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaire afin d'attaquer les objectifs de ce laboratoire.
 
 ## Installation
+
+Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer et configurer certains paramètres.
 
 1. **Téléchargement de Labtainers** :
    - Rendez-vous sur le site officiel de Labtainers à [https://nps.edu/web/c3o/labtainers](https://nps.edu/web/c3o/labtainers).
@@ -12,12 +31,8 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
 ## Configuration de l'environnement
 
 1. **Lancement de la machine virtuelle** :
-   - Ouvrez VMware Workstation et démarrez votre machine virtuelle.
-
-2. **Copie des fichiers du laboratoire en utilisant le glisser-déposer** :
-   - Dans la machine virtuelle, ouvrez un explorateur de fichiers.
-   - Accédez au répertoire `./web_lab/` sur votre système hôte.
-   - Faites un glisser-déposer de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
+   - Ouvrez VMware Wo
+Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer et configurer certains paramètres.-déposer de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
 
 3. **Remplacement des scripts personnalisés** :
    - Ouvrez un terminal dans la machine virtuelle.
