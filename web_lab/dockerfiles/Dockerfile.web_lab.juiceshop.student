@@ -1,0 +1,76 @@
+#
+# Labtainer Dockerfile of juiceshop host 
+#
+
+ARG registry
+FROM $registry/labtainer.network
+
+
+#
+#  lab is the fully qualified image name, e.g., mylab.some_container.student
+#  labdir is the name of the lab, e.g., mylab 
+#  imagedir is the name of the container
+#  user_name is the USER from the start.config, if other than ubuntu,
+#            then that user must be added in this dockerfile
+#            before the USER command
+#
+ARG lab
+ARG labdir
+ARG imagedir
+ARG user_name
+ARG password
+ARG apt_source
+ARG version
+LABEL version=$version
+RUN cp /var/tmp/sources.list /etc/apt/sources.list 
+ENV APT_SOURCE $apt_source
+RUN /usr/bin/apt-source.sh
+
+#
+#  put package installation here, e.g.,
+#
+
+#Install node + download juiceshop
+RUN apt update && apt install -y build-essential apt-transport-https lsb-release ca-certificates curl npm git nano sqlite3 apt-utils
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN apt install -y nodejs
+
+RUN wget https://github.com/juice-shop/juice-shop/releases/download/v14.5.1/juice-shop-14.5.1_node14_linux_x64.tgz
+RUN tar -xf /juice*
+RUN rm /juice*.tgz
+
+#
+# Install the system files found in the _system directory
+#
+ADD $labdir/$imagedir/sys_tar/sys.tar /
+ADD $labdir/sys_$lab.tar.gz /
+#
+RUN useradd -ms /bin/bash $user_name
+RUN echo "$user_name:$password" | chpasswd
+RUN adduser $user_name sudo
+
+
+#
+#  **** Perform all root operations, e.g.,           ****
+#  **** "apt-get install" prior to the USER command. ****
+#
+USER $user_name
+ENV HOME /home/$user_name
+#
+# Install files in the user home directory
+#
+ADD $labdir/$imagedir/home_tar/home.tar $HOME
+
+# remove after docker fixes problem with empty tars
+RUN rm -f $HOME/home.tar
+ADD $labdir/$lab.tar.gz $HOME
+
+EXPOSE 3000
+
+#
+#  The first thing that executes on the container.
+#
+
+USER root
+CMD ["/bin/bash", "-c", "exec /sbin/init --log-target=journal 3>&1"]
+

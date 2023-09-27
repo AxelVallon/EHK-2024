@@ -1,0 +1,9 @@
+[Service]
+Type=simple
+WorkingDirectory=/juice-shop_14.5.1
+Environment=NODE_ENV=ctf
+ExecStart=/usr/bin/npm run start
+
+[Install]
+WantedBy=multi-user.target
+Alias=juice-shop

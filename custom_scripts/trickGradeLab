@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import labutils
+import logging
+import LabtainerLogging
+import CurrentLab
+import argparse
+import subprocess
+import shlex
+import imp
+import zipfile
+
+def main():
+    parser = argparse.ArgumentParser(description='Trick grade lab for multi user labs')
+    parser.add_argument('lab', nargs='?')
+    parser.add_argument('--workstations', default='workstations', help='Name of the workstations parameter')
+    args = parser.parse_args()
+    labname = None 
+    if args.lab is not None:
+        labname = args.lab
+        #change dir to xfer if it exists
+        if os.path.isdir('/home/student/labtainer_xfer/'+labname):
+            os.chdir('/home/student/labtainer_xfer/'+labname+'/')
+        else:
+            print('Lab not found')
+            sys.exit(1)
+        basename = 'default_creds.'+labname+'.lab'
+        #check if zip file exists
+        if not os.path.isfile(basename):
+            print('Zip file not found')
+            sys.exit(1)
+
+        #remove and recreate tmp dir
+        if os.path.isdir('./tmp'):
+            os.system('rm -rf ./tmp')
+        os.mkdir('./tmp')
+        
+        #unzip file to tmp
+        with zipfile.ZipFile(basename, 'r') as zip_ref:
+            zip_ref.extractall('./tmp')
+
+        #change dir to tmp
+        os.chdir('./tmp')
+
+        #iterate over each file begging with default_creds
+        for zipped_file in os.listdir():
+            if not zipped_file.startswith('default_creds'):
+                continue
+
+            #get name of zip file
+            name = zipped_file.split('.')[2]
+            print("Iterating through zip file: "+name)
+            #open zip file in write mode
+            with zipfile.ZipFile(zipped_file, 'a') as zip_ref:
+               # replace contents of .local/.email within zip file
+                file_path = '.local/.email'
+                if file_path in zip_ref.namelist():
+                    with zip_ref.open(file_path, 'r') as f:
+                        contents = f.read().decode('utf-8')
+                    contents = contents.replace('default_creds', name)
+                    zip_ref.writestr(file_path, contents.encode('utf-8'))
+
+                # replace contents of other_users/ubuntu/.local/.email within zip file
+                other_users_path = 'other_users/ubuntu/.local/.email'
+                if other_users_path in zip_ref.namelist():
+                    with zip_ref.open(other_users_path, 'r') as f:
+                        contents = f.read().decode('utf-8')
+                    contents = contents.replace('default_creds', name)
+                    zip_ref.writestr(other_users_path, contents.encode('utf-8'))
+
+            #keep only alphabetical characters in name
+            worksation = ''.join(e for e in name if e.isalnum())
+            
+            #rename zip file
+            os.rename(zipped_file, worksation+'.'+labname+'='+labname+'.'+args.workstations+'.student.zip')
+
+            #zip the file  into a .lab
+            with zipfile.ZipFile(worksation+'.'+labname+'.lab', 'w') as zip_ref:
+                zip_ref.write(worksation+'.'+labname+'='+labname+'.'+args.workstations+'.student.zip')
+            
+            #move the file to parent dir even if it already exists
+            if os.path.isfile('../'+worksation+'.'+labname+'.lab'):
+                os.remove('../'+worksation+'.'+labname+'.lab')
+
+            os.rename(worksation+'.'+labname+'.lab', '../'+worksation+'.'+labname+'.lab')
+
+        #move to parent dir
+        os.chdir('../')
+
+        #remove old folder if it exists
+        if os.path.isdir('old'):
+            os.system('rm -rf ../'+worksation)
+        #create old folder
+        os.mkdir('old')
+
+        #move old zip file to old folder
+        os.rename(basename, 'old/'+basename)
+
+if __name__ == '__main__':
+    sys.exit(main())
+
