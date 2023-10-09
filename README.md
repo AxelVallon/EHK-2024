@@ -1,23 +1,21 @@
-# Laboratoire labtainer
+# Exercice OWASP Juice Shop
 
 ## Introduction
 
 Dans le cadre du cours EHK 2024, il vous est demandé de mettre en place de compétences de Ethical Hacking sur la plateforme `Juice-Shop`.
 Cette plateforme permet de s'attaquer à une grande quantité de challenge web dans le but de d'identifier et attaquer différents type de vulnérabilités.
 
-Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuée. Normalement, cette solution est déployée sur un serveur distant mais suite à des problème d'infrastructure, vous devrez l'installer vous même localement. 
-
-**Ce laboratoire ne sera tout de même pas évalué.**
+Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuées. Normalement, cette solution peut être déployée sur un serveur distant, mais dans le cadre de cet exercice, vous devrez l'installer vous même localement. 
 
 ## Labtainer
 
-Ce laboratoire a besoin d'une infrastructure assez complexe.
+Cet exercice a besoin d'une infrastructure assez complexe.
 
 ![Diagramme réseau](resources/diagramme.png)
 
-Lors ce que vous aurez installer labtainer et lancer le laboratoire, votre infrastructure ressemblera à celle dessus.
+Lors ce que vous aurez installer labtainer et lancé l'exercice, votre infrastructure ressemblera à celle illustrée dans le schéma.
 
-Vous aurez accès un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaire afin d'attaquer les objectifs de ce laboratoire.
+Vous aurez accès un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaires afin d'attaquer les objectifs de ce laboratoire.
 
 ## Installation
 
@@ -25,19 +23,24 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
 
 1. **Téléchargement de Labtainers** :
    - Rendez-vous sur le site officiel de Labtainers à [https://nps.edu/web/c3o/labtainers](https://nps.edu/web/c3o/labtainers).
-   - Suivez les instructions pour télécharger la dernière version de Labtainers.
-   - Nous vous recommandons d'installer Labtainers via VMware Workstation, car c'est l'environnement que nous avons utilisé pour créer ce laboratoire.
+   - Suivez les instructions pour télécharger la dernière VM de Labtainers.
+   - Nous vous recommandons d'installer Labtainers via VMware Workstation, car c'est l'environnement que nous avons utilisé pour créer cet exercice.
 
 ## Configuration de l'environnement
 
 1. **Lancement de la machine virtuelle** :
-   - Ouvrez VMware Wo
-Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer et configurer certains paramètres.-déposer de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
+   - (Optionnel) Augmentez les ressources votre machine virtuelle à 16 coeur (ou moins) et 4GB de RAM.
+   - Lancer WMWare workstation et lancer la machine virtuelle que vous venez de télécharger.
+   - Il se peut que lors du lancement de celle-ci, un mot de passe vous soit demandé, et celui-ci est `password123`.
+
+2. **Copie du laboratoire** : 
+   - Pour devrez copier le laboratoire afin de le rendre disponible dans la liste des laboratoires préalablement disponible.
+   - Pour ce faire, déposez de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
 
 3. **Remplacement des scripts personnalisés** :
-   - Ouvrez un terminal dans la machine virtuelle.
-   - Accédez au répertoire `./custom_script` où les scripts personnalisés sont fournis.
-   - Faites un glisser-déposer de tous les fichiers et dossiers du répertoire `./custom_script` depuis votre système hôte vers le répertoire `/home/student/labtainer/labtainer-student/bin` dans la machine virtuelle pour les remplacer.
+   - Pour devrez modifier certains scripts pour faire fonctionner ce laboratoire.
+   - Pour ce faire, accédez au répertoire `./custom_script` où les scripts personnalisés sont fournis.
+   - Faites un glisser-déposer de ce répertoire depuis votre système hôte vers le répertoire `/home/student/labtainer/labtainer-student/bin` dans la machine virtuelle pour les remplacer.
 
 4. **Ajout et configuration de la carte réseau** :
    - Dans VMware Workstation, accédez aux paramètres de la machine virtuelle en cliquant sur "VM > Settings".
@@ -57,44 +60,46 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
      ```
 
 6. **Lancement du laboratoire**:
-   - Exécutez la command suivant pour lancer le laboratoire :
+   - Exécutez la commande suivante pour lancer le laboratoire dans le :
      ```
      labtainer web_lab
      ```
-     Cette commande va lancer votre laboratoire. Référencez vous à la section "Résolution de problème" si cette commande ne fonctionne pas.
+     Cette commande va lancer votre laboratoire. Référencez vous à la section "Résolution de problème" de ce document si cette commande ne fonctionne pas.
 
 7. **Lancement des outils**
-   - Dans le nouveau terminal `ubuntu@attacker: ~`, vous aurez accès aux différents outils nécessaire pour ce laboratoire.
+   - Dans le nouveau terminal `ubuntu@attacker: ~`, vous aurez accès aux différents outils nécessaires pour ce laboratoire.
      ```
-     # Lancer firefox en arrière-plan
+     # Lancez firefox en arrière-plan
      firefox & 
-     # Executer burp
+     # Executez burp
      java -jar burpsuite_community.jar
      ```
 
 8. **Configuration de firefox**
-   La version de `Juice Shop` utilisée dans ce laboratoire importe des dépendances `js` depuis internet, mais le réseau que vous venez de générer ne dispose pas de connexion vers l'exterieur. Il vous est donc nécessaire de :
+   La version de `Juice Shop` utilisée dans ce laboratoire importe des dépendances `js` depuis internet, mais le réseau que vous venez de générer ne dispose pas de connexion vers l'extérieur. Il vous est donc nécessaire de :
    - Dans la barre de recherche du navigateur que vous venez d'ouvrir, cherchez `about:config`.
-   - Acceptez le risque et continuez
-   - Cherchez `network.dns.disabled` et changez sa configuration à `true`.
+   - Acceptez le risque et continuez.
+   - Cherchez `network.dns.disabled` et changez sa configuration à `true`. Appliquez les modifications.
 
-9. **Accéder à `Juice Shop`**
+9.  **Accéder à `Juice Shop`**
    - Entrez l'URL `http://172.22.200.10:3000` pour accéder à `Juice Shop`. 
 
-
+10. **Arrêter le laboratoire**
+   - Lorsque vous avez terminez le laboratoire ou bien mettez en pause votre travail, il vous sera nécessaire d'arrêter le laboratoire, afin de sauvegarder votre travail.
+   - Pour ce faire, il est nécessaire de lancer la commande `stoplab web_lab` à l'emplacement `/home/student/labtainer/labtainer-student`.
+   - Notez que si vous mettez votre machine virtuelle en `Suspend`, vous n'aurez pas besoin d'interrompre votre laboratoire.
+  
 ## Intercepter un paquet avec Burp
 
-Etant donné que vous ne pouvez pas lancer de navigateur depuis Burp, il vous sera nécessaire d'activer un proxy depuis firefox afin de pouvoir intercepter des communication avec Burp.
-
-Pour ce faire, il faudra vous rendre avec le navigateur firefox du côté attaquant dans `Settings > Network Settings` et configurer le proxy suivant
+Burp propose un proxy qui permet d'intercepter le trafic http entre le navigateur et juice shop. Pour l'utiliser, il vous faudra configurer votre navigateur pour qu'il passe par ce proxy. Par exemple, pour firefox, le règlage se trouve dans `Settings > Network settings`
 
 ![Configuration du proxy](resources/image-2.png)
 
-En suite, vous devrez aller dans Burp et dans `Proxy`, il vous sera nécessaire d'activer l'intercepteur en changeant `Intercept is off` à `Intercept is on`. A partir de ce moment, Burp interceptera toute les communication entre votre navigateur et le service `Juice shop`. Vous pourrez alors les envoyer au `Repeater`.
+En suite, vous devrez aller dans Burp et dans `Proxy`, il vous sera nécessaire d'activer l'intercepteur en changeant `Intercept is off` à `Intercept is on`. A partir de ce moment, Burp interceptera toute les communications entre votre navigateur et le service `Juice shop`. Vous pourrez alors les envoyer au `Repeater`.
 
 Désactiver l'intercepteur dans Burp permet aux requêtes http de passer sans être intérrompues. Cependant, lorsque que vous quittez Burp, il est indispensable de désactiver le proxy dans votre navigateur firefox. 
 
-## Tâche à effectuer
+## Tâches à effectuer
 
 ### Warmup - Mauvaise validation d’inputs
 
