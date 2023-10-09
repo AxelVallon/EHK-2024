@@ -83,6 +83,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
 
 9.  **Accéder à `Juice Shop`**
    - Entrez l'URL `http://172.22.200.10:3000` pour accéder à `Juice Shop`. 
+   - Vous pouvez dès à présent effectuer les tâches mentionnées dans la section `Tâche à effectuer` de ce document.
 
 10. **Arrêter le laboratoire**
    - Lorsque vous avez terminez le laboratoire ou bien mettez en pause votre travail, il vous sera nécessaire d'arrêter le laboratoire, afin de sauvegarder votre travail.
