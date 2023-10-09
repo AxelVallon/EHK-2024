@@ -2,24 +2,24 @@
 
 ## Introduction
 
-Dans le cadre du cours EHK 2024, il vous est demandé de mettre en place des compétences de Ethical Hacking sur la plateforme `Juice-Shop`.
+Dans le cadre du cours EHK, il vous est demandé de mettre en place des compétences de Ethical Hacking sur la plateforme [Juice Shop](https://owasp.org/www-project-juice-shop "Juice Shop).
 Cette plateforme permet de s'attaquer à une grande quantité de challenges web dans le but de d'identifier et attaquer différents types de vulnérabilités.
 
-Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuées. Normalement, cette solution peut être déployée sur un serveur distant, mais dans le cadre de cet exercice, vous devrez l'installer vous même localement. 
+Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuées. Normalement, cette solution peut être déployée sur un serveur distant, mais dans le cadre de cet exercice, vous devrez l'installer localement. 
 
 ## Labtainer
 
-Cet exercice a besoin d'une infrastructure assez complexe.
+Cet exercice a besoin de l'infrastructure illustrée ci-dessous.
 
 ![Diagramme réseau](resources/diagramme.png)
 
-Lors ce que vous aurez installé labtainer et lancé l'exercice, votre infrastructure ressemblera à celle illustrée dans le schéma.
+Lorsque vous aurez installé labtainer et lancé l'exercice, votre infrastructure ressemblera à celle illustrée dans le schéma.
 
-Vous aurez accès à un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaires afin d'attaquer les objectifs de ce laboratoire.
+Vous aurez accès à un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaires afin d'attaquer les objectifs de cet exercice. 
 
 ## Installation
 
-Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer et configurer certains paramètres.
+Pour effectuer cet exercice, vous devrez mettre en place la solution Labtainer et configurer certains paramètres. Selon la terminologie labtainer, nous allons installer un laboratoire.
 
 1. **Téléchargement de Labtainers** :
    - Rendez-vous sur le site officiel de Labtainers à [https://nps.edu/web/c3o/labtainers](https://nps.edu/web/c3o/labtainers).
@@ -35,7 +35,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
 
 2. **Copie du laboratoire** : 
    - Vous devrez copier le laboratoire afin de le rendre disponible dans la liste des laboratoires préalablement disponible.
-   - Pour ce faire, déposez de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
+   - Pour ce faire, déposez tout les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
 
 3. **Remplacement des scripts personnalisés** :
    - Vous devrez modifier certains scripts pour faire fonctionner ce laboratoire.
@@ -43,13 +43,13 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
    - Faites un glisser-déposer de ce répertoire depuis votre système hôte vers le répertoire `/home/student/labtainer/labtainer-student/bin` dans la machine virtuelle pour les remplacer.
 
 4. **Ajout et configuration de la carte réseau** :
-   - Dans VMware Workstation, accédez aux paramètres de la machine virtuelle en cliquant sur "VM > Settings".
-   - Cliquez sur "Add" pour ajouter une nouvelle carte réseau.
-   - Sélectionnez "Network Adapter" et cliquez sur "Finish".
+   - Dans VMware Workstation, accédez aux paramètres de la machine virtuelle en cliquant sur `VM > Settings`.
+   - Cliquez sur `Add` pour ajouter une nouvelle carte réseau.
+   - Sélectionnez `Network Adapter` et cliquez sur `Finish`.
 
    ![Ajout de la carte réseau](resources/image.png)
 
-   - Maintenant, sélectionnez la nouvelle carte réseau ajoutée et assurez-vous qu'elle est configurée en mode "Host-only".
+   - Maintenant, sélectionnez la nouvelle carte réseau ajoutée et assurez-vous qu'elle est configurée en mode `Host-only`.
 
 5. **Modification de la carte en mode promiscuous** :
    - Dans la machine virtuelle, ouvrez un terminal.
@@ -83,12 +83,12 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
 
 9.  **Accéder à `Juice Shop`**
    - Entrez l'URL `http://172.22.200.10:3000` pour accéder à `Juice Shop`. 
-   - Vous pouvez dès à présent effectuer les tâches mentionnées dans la section `Tâche à effectuer` de ce document.
+   - Vous pouvez dès à présent effectuer les tâches mentionnées dans la section `Tâches à effectuer` de ce document.
 
 10. **Arrêter le laboratoire**
    - Lorsque vous avez terminé le laboratoire ou bien mettez en pause votre travail, il vous sera nécessaire d'arrêter le laboratoire, afin de sauvegarder votre travail.
    - Pour ce faire, il est nécessaire de lancer la commande `stoplab web_lab` à l'emplacement `/home/student/labtainer/labtainer-student`.
-   - Notez que si vous mettez votre machine virtuelle en `Suspend`, vous n'aurez pas besoin d'interrompre votre laboratoire.
+   - Notez que si vous mettez votre machine virtuelle en mode `Suspend`, vous n'aurez pas besoin d'interrompre votre laboratoire.
   
 ## Intercepter un paquet avec Burp
 
@@ -98,7 +98,7 @@ Burp propose un proxy qui permet d'intercepter le trafic http entre le navigateu
 
 En suite, vous devrez aller dans Burp et dans `Proxy`, il vous sera nécessaire d'activer l'intercepteur en changeant `Intercept is off` à `Intercept is on`. A partir de ce moment, Burp interceptera toute les communications entre votre navigateur et le service `Juice shop`. Vous pourrez alors les envoyer au `Repeater`.
 
-Désactiver l'intercepteur dans Burp permet aux requêtes http de passer sans être intérrompues. Cependant, lorsque que vous quittez Burp, il est indispensable de désactiver le proxy dans votre navigateur firefox. 
+Désactiver l'intercepteur dans Burp permet aux requêtes http de passer sans être interrompues. Cependant, lorsque que vous quittez Burp, il est indispensable de désactiver le proxy dans votre navigateur firefox. 
 
 ## Tâches à effectuer
 
