@@ -2,8 +2,8 @@
 
 ## Introduction
 
-Dans le cadre du cours EHK 2024, il vous est demandé de mettre en place de compétences de Ethical Hacking sur la plateforme `Juice-Shop`.
-Cette plateforme permet de s'attaquer à une grande quantité de challenge web dans le but de d'identifier et attaquer différents type de vulnérabilités.
+Dans le cadre du cours EHK 2024, il vous est demandé de mettre en place des compétences de Ethical Hacking sur la plateforme `Juice-Shop`.
+Cette plateforme permet de s'attaquer à une grande quantité de challenges web dans le but de d'identifier et attaquer différents types de vulnérabilités.
 
 Afin de pouvoir évaluer votre travail, nous avons mis en place la solution labtainer qui permet d'analyser les actions que vous avez effectuées. Normalement, cette solution peut être déployée sur un serveur distant, mais dans le cadre de cet exercice, vous devrez l'installer vous même localement. 
 
@@ -13,9 +13,9 @@ Cet exercice a besoin d'une infrastructure assez complexe.
 
 ![Diagramme réseau](resources/diagramme.png)
 
-Lors ce que vous aurez installer labtainer et lancé l'exercice, votre infrastructure ressemblera à celle illustrée dans le schéma.
+Lors ce que vous aurez installé labtainer et lancé l'exercice, votre infrastructure ressemblera à celle illustrée dans le schéma.
 
-Vous aurez accès un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaires afin d'attaquer les objectifs de ce laboratoire.
+Vous aurez accès à un terminal connecté à SSH, et aurez la possibilité de lancer Firefox et Burp sur le protocol X11, et donc vous aurez les outils nécessaires afin d'attaquer les objectifs de ce laboratoire.
 
 ## Installation
 
@@ -34,11 +34,11 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
    - Il se peut que lors du lancement de celle-ci, un mot de passe vous soit demandé, et celui-ci est `password123`.
 
 2. **Copie du laboratoire** : 
-   - Pour devrez copier le laboratoire afin de le rendre disponible dans la liste des laboratoires préalablement disponible.
+   - Vous devrez copier le laboratoire afin de le rendre disponible dans la liste des laboratoires préalablement disponible.
    - Pour ce faire, déposez de tous les fichiers et dossiers du répertoire `./web_lab/` depuis votre système hôte vers le répertoire `/home/student/labtainer/trunk/labs/web_lab` dans la machine virtuelle pour les copier.
 
 3. **Remplacement des scripts personnalisés** :
-   - Pour devrez modifier certains scripts pour faire fonctionner ce laboratoire.
+   - Vous devrez modifier certains scripts pour faire fonctionner ce laboratoire.
    - Pour ce faire, accédez au répertoire `./custom_script` où les scripts personnalisés sont fournis.
    - Faites un glisser-déposer de ce répertoire depuis votre système hôte vers le répertoire `/home/student/labtainer/labtainer-student/bin` dans la machine virtuelle pour les remplacer.
 
@@ -64,7 +64,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
      ```
      labtainer web_lab
      ```
-     Cette commande va lancer votre laboratoire. Référencez vous à la section "Résolution de problème" de ce document si cette commande ne fonctionne pas.
+     Cette commande va lancer votre laboratoire. Référencez-vous à la section "Résolution de problème" de ce document si cette commande ne fonctionne pas.
 
 7. **Lancement des outils**
    - Dans le nouveau terminal `ubuntu@attacker: ~`, vous aurez accès aux différents outils nécessaires pour ce laboratoire.
@@ -86,7 +86,7 @@ Pour effectuer ce laboratoire, vous devrez mettre en place la solution Labtainer
    - Vous pouvez dès à présent effectuer les tâches mentionnées dans la section `Tâche à effectuer` de ce document.
 
 10. **Arrêter le laboratoire**
-   - Lorsque vous avez terminez le laboratoire ou bien mettez en pause votre travail, il vous sera nécessaire d'arrêter le laboratoire, afin de sauvegarder votre travail.
+   - Lorsque vous avez terminé le laboratoire ou bien mettez en pause votre travail, il vous sera nécessaire d'arrêter le laboratoire, afin de sauvegarder votre travail.
    - Pour ce faire, il est nécessaire de lancer la commande `stoplab web_lab` à l'emplacement `/home/student/labtainer/labtainer-student`.
    - Notez que si vous mettez votre machine virtuelle en `Suspend`, vous n'aurez pas besoin d'interrompre votre laboratoire.
   
@@ -110,7 +110,7 @@ En visitant le shop, vous ne l'aimez pas du tout, vous décidez donc le de faire
    
 2. **Quel est le problème dans l'implémentation du système de feedback ?**
    
-3. **Trouvez un moyen de vous créer un compte admin** : Pour cette étape il est peut-être utile d'obtenir le schéma de la base de donnée que vous
+3. **Trouvez un moyen de vous créer un compte admin** : Pour cette étape il est peut-être utile d'obtenir le schéma de la base de données que vous
 récupérerez dans la partie suivante !
 
 4. **Quel est le problème dans cet appel à l'API ?**
@@ -121,17 +121,17 @@ Dans cette partie on souhaite récupérer le schéma de la base de donnée pour 
 
 5. **Quel est le point d'entrée pour injecter du SQL** ?
    
-6. **Quel est le moteur de la base de donnée** ?
+6. **Quel est le moteur de la base de données** ?
    
 7. **Quelle est la requête utilisée de base pour récupérer un produit** ?
    
-8. **En fonction du moteur de la base de donnée, existe-t-il des fonctions spécifiques pour récupérer le schéma de la base de donnée ? Ou existe-t-il une table contenant par exemple le script de création de la base de donnée ?**
+8. **En fonction du moteur de la base de données, existe-t-il des fonctions spécifiques pour récupérer le schéma de la base de données ? Ou existe-t-il une table contenant par exemple le script de création de la base de données ?**
    
-9. **Trouvez un moyen de récupérer le schéma de la base de donnée.** : *Hint: UNION SELECT '1', '2', '3', ..... –*
+9. **Trouvez un moyen de récupérer le schéma de la base de données.** : *Hint: UNION SELECT '1', '2', '3', ..... –*
 
 ### Récupération du compte admin
 
-Maintenant que nous avons une bonne idée de la structure de la base de donnée, nous allons pouvoir récupérer des informations précises, tel que des comptes utilisateurs, notamment celui de l'administrateur. 
+Maintenant que nous avons une bonne idée de la structure de la base de donnée, nous allons pouvoir récupérer des informations précises, telles que des comptes utilisateurs, notamment celui de l'administrateur. 
 
 On peut réutiliser le même point d'entrée que précédemment.
 
